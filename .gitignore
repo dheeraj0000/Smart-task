@@ -60,10 +60,7 @@ npm-debug.log
 *.pyc
 staticfiles/
 
-venv/
-node_modules/
-__pycache__/
-dist/
-.env
-*.log
+
+
+
 
