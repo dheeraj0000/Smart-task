@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Task Analyzer</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎯 Smart Task Analyzer</h1>
+            <p class="subtitle">Intelligently score and prioritize your tasks</p>
+        </header>
+
+        <main>
+            <!-- Input Section -->
+            <section class="input-section">
+                <h2>Add Tasks</h2>
+                
+                <!-- Strategy Selection -->
+                <div class="strategy-selector">
+                    <label for="strategy">Sorting Strategy:</label>
+                    <select id="strategy" name="strategy">
+                        <option value="smart_balance">Smart Balance (Recommended)</option>
+                        <option value="fastest_wins">Fastest Wins</option>
+                        <option value="high_impact">High Impact</option>
+                        <option value="deadline_driven">Deadline Driven</option>
+                    </select>
+                    <p class="strategy-description" id="strategy-description">
+                        Balances urgency, importance, effort, and dependencies for optimal task prioritization.
+                    </p>
+                </div>
+
+                <!-- Tabs for Input Methods -->
+                <div class="tabs">
+                    <button class="tab-button active" onclick="switchTab('single')">Single Task</button>
+                    <button class="tab-button" onclick="switchTab('bulk')">Bulk Import (JSON)</button>
+                </div>
+
+                <!-- Single Task Form -->
+                <div id="single-tab" class="tab-content active">
+                    <form id="task-form">
+                        <div class="form-group">
+                            <label for="title">Task Title *</label>
+                            <input type="text" id="title" name="title" required placeholder="e.g., Fix login bug">
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="due_date">Due Date</label>
+                                <input type="date" id="due_date" name="due_date">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="estimated_hours">Estimated Hours *</label>
+                                <input type="number" id="estimated_hours" name="estimated_hours" 
+                                       min="0.1" step="0.1" required placeholder="3.0">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="importance">Importance (1-10) *</label>
+                                <input type="number" id="importance" name="importance" 
+                                       min="1" max="10" required placeholder="8">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="dependencies">Dependencies (comma-separated task IDs)</label>
+                            <input type="text" id="dependencies" name="dependencies" 
+                                   placeholder="task_1, task_2">
+                        </div>
+
+                        <button type="submit" class="btn btn-primary">Add Task</button>
+                    </form>
+                </div>
+
+                <!-- Bulk JSON Input -->
+                <div id="bulk-tab" class="tab-content">
+                    <div class="form-group">
+                        <label for="json-input">Paste JSON Array of Tasks:</label>
+                        <textarea id="json-input" rows="10" placeholder='[
+  {
+    "title": "Fix login bug",
+    "due_date": "2025-11-30",
+    "estimated_hours": 3,
+    "importance": 8,
+    "dependencies": []
+  },
+  {
+    "title": "Update documentation",
+    "due_date": "2025-12-05",
+    "estimated_hours": 2,
+    "importance": 5,
+    "dependencies": ["Fix login bug"]
+  }
+]'></textarea>
+                    </div>
+                    <button type="button" class="btn btn-secondary" onclick="loadBulkTasks()">Load Tasks</button>
+                </div>
+
+                <!-- Task List Preview -->
+                <div id="task-list-preview" class="task-preview">
+                    <h3>Current Tasks (<span id="task-count">0</span>)</h3>
+                    <div id="task-list"></div>
+                    <div class="actions">
+                        <button class="btn btn-primary" id="analyze-btn" onclick="analyzeTasks()" disabled>
+                            Analyze Tasks
+                        </button>
+                        <button class="btn btn-secondary" onclick="clearTasks()">Clear All</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Output Section -->
+            <section class="output-section" id="output-section" style="display: none;">
+                <h2>Priority Analysis Results</h2>
+                
+                <!-- Circular Dependencies Warning -->
+                <div id="circular-warning" class="warning" style="display: none;">
+                    <strong>⚠️ Warning:</strong> Circular dependencies detected! Please review your task dependencies.
+                </div>
+
+                <!-- Top 3 Suggestions -->
+                <div id="suggestions" class="suggestions"></div>
+
+                <!-- All Tasks Sorted by Priority -->
+                <div id="results" class="results"></div>
+            </section>
+
+            <!-- Loading Indicator -->
+            <div id="loading" class="loading" style="display: none;">
+                <div class="spinner"></div>
+                <p>Analyzing tasks...</p>
+            </div>
+
+            <!-- Error Message -->
+            <div id="error" class="error" style="display: none;"></div>
+        </main>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
+

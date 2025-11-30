@@ -1,0 +1,14 @@
+services:
+  - type: web
+    name: smart-task-analyzer
+    env: python
+    buildCommand: cd backend && pip install -r requirements.txt && python manage.py migrate
+    startCommand: cd backend && gunicorn task_analyzer.wsgi:application
+    envVars:
+      - key: SECRET_KEY
+        generateValue: true
+      - key: DEBUG
+        value: False
+      - key: PYTHON_VERSION
+        value: 3.12.2
+

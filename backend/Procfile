@@ -1,0 +1,2 @@
+web: gunicorn task_analyzer.wsgi --log-file -
+
