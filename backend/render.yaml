@@ -2,7 +2,7 @@ services:
   - type: web
     name: smart-task-analyzer
     env: python
-    buildCommand: cd backend && pip install -r requirements.txt && python manage.py migrate
+    buildCommand: cd backend && pip install -r requirements.txt && python manage.py collectstatic --noinput && python manage.py migrate
     startCommand: cd backend && gunicorn task_analyzer.wsgi:application
     envVars:
       - key: SECRET_KEY
